@@ -3,24 +3,26 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
+    // Initialize state to hold invoice data
     const [data, setData] = useState({
-        logo: 'https://your-logo-url.com/logo.png',
-        seller: { name: '', address: '', city: '', state: '', pincode: '', pan: '', gst: '' },
-        billing: { name: '', address: '', city: '', state: '', pincode: '', stateCode: '' },
-        shipping: { name: '', address: '', city: '', state: '', pincode: '', stateCode: '' },
-        placeOfSupply: '',
-        placeOfDelivery: '',
-        orderNumber: '',
-        orderDate: '',
-        invoiceNumber: '',
-        invoiceDate: '',
-        dueDate: '',
-        reverseCharge: 'No',
-        items: [{ description: '', unitPrice: 0, quantity: 1, discount: 0, netAmount: 0 }],
-        totalAmount: 0,
-        signature: 'https://your-signature-url.com/signature.png'
+        logo: 'https://your-logo-url.com/logo.png', // URL for company logo
+        seller: { name: '', address: '', city: '', state: '', pincode: '', pan: '', gst: '' }, // Seller details
+        billing: { name: '', address: '', city: '', state: '', pincode: '', stateCode: '' }, // Billing details
+        shipping: { name: '', address: '', city: '', state: '', pincode: '', stateCode: '' }, // Shipping details
+        placeOfSupply: '', // Place of supply
+        placeOfDelivery: '', // Place of delivery
+        orderNumber: '', // Order number
+        orderDate: '', // Order date
+        invoiceNumber: '', // Invoice number
+        invoiceDate: '', // Invoice date
+        dueDate: '', // Due date
+        reverseCharge: 'No', // Reverse charge indicator
+        items: [{ description: '', unitPrice: 0, quantity: 1, discount: 0, netAmount: 0 }], // List of items in the invoice
+        totalAmount: 0, // Total amount of the invoice
+        signature: 'https://your-signature-url.com/signature.png' // URL for authorized signature image
     });
 
+    // Handle change in input fields
     const handleChange = (e) => {
         const { name, value } = e.target;
         const keys = name.split('.');
@@ -40,6 +42,7 @@ function App() {
         }
     };
 
+    // Handle change in item input fields
     const handleItemChange = (index, e) => {
         const { name, value } = e.target;
         const items = [...data.items];
@@ -48,6 +51,7 @@ function App() {
         setData(prevData => ({ ...prevData, items }));
     };
 
+    // Add a new item to the invoice
     const addItem = () => {
         setData(prevData => ({
             ...prevData,
@@ -55,6 +59,7 @@ function App() {
         }));
     };
 
+    // Handle form submission to generate invoice PDF
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:4000/generate-invoice', data, { responseType: 'blob' })
