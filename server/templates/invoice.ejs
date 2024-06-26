@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }       
+
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+
+        .invoice-box table th {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading th {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        .logo {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .totals {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 50px;
+        }
+
+        .signature img {
+            width: 150px;
+            height: auto;
+        }
+
+        .signature p {
+            margin: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="invoice-box">
+        <img src="<%= data.logo %>" class="logo" />
+        <div class="title">Tax Invoice</div>
+        <table class="details">
+            <tr>
+                <th>Seller</th>
+                <th>Billing Address</th>
+                <th>Shipping Address</th>
+            </tr>
+            <tr>
+                <td>
+                    <%= data.seller.name %><br />
+                    <%= data.seller.address %><br />
+                    <%= data.seller.city %>, <%= data.seller.state %> - <%= data.seller.pincode %><br />
+                    PAN: <%= data.seller.pan %><br />
+                    GST: <%= data.seller.gst %>
+                </td>
+                <td>
+                    <%= data.billing.name %><br />
+                    <%= data.billing.address %><br />
+                    <%= data.billing.city %>, <%= data.billing.state %> - <%= data.billing.pincode %><br />
+                    State Code: <%= data.billing.stateCode %>
+                </td>
+                <td>
+                    <%= data.shipping.name %><br />
+                    <%= data.shipping.address %><br />
+                    <%= data.shipping.city %>, <%= data.shipping.state %> - <%= data.shipping.pincode %><br />
+                    State Code: <%= data.shipping.stateCode %>
+                </td>
+            </tr>
+            <tr>
+                <th>Place of Supply</th>
+                <th>Place of Delivery</th>
+                <th>Order Details</th>
+            </tr>
+            <tr>
+                <td><%= data.placeOfSupply %></td>
+                <td><%= data.placeOfDelivery %></td>
+                <td>
+                    Order No.: <%= data.orderNumber %><br />
+                    Order Date: <%= data.orderDate %><br />
+                    Invoice No.: <%= data.invoiceNumber %><br />
+                    Invoice Date: <%= data.invoiceDate %><br />
+                    Due Date: <%= data.dueDate %><br />
+                    Reverse Charge: <%= data.reverseCharge %>
+                </td>
+            </tr>
+        </table>
+        <table class="items">
+            <tr>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Net Amount</th>
+                <th>Tax Rate</th>
+                <th>Tax Type</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>IGST</th>
+                <th>Tax Amount</th>
+            </tr>
+            <% data.items.forEach(item => { %>
+                <tr>
+                    <td><%= item.description %></td>
+                    <td><%= item.unitPrice %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= item.discount %></td>
+                    <td><%= item.netAmount %></td>
+                    <td><%= item.taxRate %>%</td>
+                    <td><%= item.taxType %></td>
+                    <td><%= item.cgst %></td>
+                    <td><%= item.sgst %></td>
+                    <td><%= item.igst %></td>
+                    <td><%= item.taxAmount %></td>
+                </tr>
+            <% }) %>
+        </table>
+        <div class="totals">
+            <p>Total Amount: <%= data.totalAmount %></p>
+            <p>Amount in Words: <%= data.amountInWords %></p>
+        </div>
+        <div class="signature">
+            <p>For <%= data.seller.name %></p>
+            <img src="<%= data.signature %>" alt="Signature" />
+            <p>Authorised Signatory</p>
+        </div>
+    </div>
+</body>
+</html>
